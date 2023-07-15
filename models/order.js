@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER
   }, {})
   Order.associate = function (models) {
-    // associations can be defined here
+    Order.belongsTo(models.User,
+      { foreignKey: 'user_id' })
+    Order.belongsToMany(models.Product,
+      { through: 'OrderProduct', foreignKey: 'order_id' })
   }
   return Order
 }

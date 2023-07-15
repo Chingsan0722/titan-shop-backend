@@ -8,7 +8,16 @@ module.exports = (sequelize, DataTypes) => {
     stock: DataTypes.DECIMAL
   }, {})
   Product.associate = function (models) {
-    // associations can be defined here
+    Product.belongsToMany(models.Order, {
+      through: 'OrderProduct',
+      foreignKey: 'product_id',
+      as: 'in_orders'
+    })
+    Product.belongsToMany(models.Cart, {
+      through: 'CartProduct',
+      foreignKey: 'product_id',
+      as: 'in_carts'
+    })
   }
   return Product
 }

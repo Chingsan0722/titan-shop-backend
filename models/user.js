@@ -7,7 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING
   }, {})
   User.associate = function (models) {
-    // associations can be defined here
+    User.hasOne(models.Cart, {
+      foreignKey: 'user_id'
+    })
+    User.hasMany(models.Order, {
+      foreignKey: 'user_id'
+    })
   }
   return User
 }

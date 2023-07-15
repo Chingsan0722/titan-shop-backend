@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     quantity: DataTypes.INTEGER
   }, {})
   CartProduct.associate = function (models) {
-    // associations can be defined here
+    CartProduct.belongsTo(models.Cart)
+    CartProduct.belongsTo(models.Product)
   }
   return CartProduct
 }

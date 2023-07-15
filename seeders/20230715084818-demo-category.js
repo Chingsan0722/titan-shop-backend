@@ -6,6 +6,7 @@ module.exports = {
     for (let i = 0; i < category.length; i++) {
       await queryInterface.bulkInsert('Categories', [{
         name: category[i],
+        available: true,
         created_at: new Date(),
         updated_at: new Date()
       }])

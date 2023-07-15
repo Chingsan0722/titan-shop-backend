@@ -11,6 +11,12 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
+      product_id: {
+        type: Sequelize.INTEGER
+      },
+      quantity: {
+        type: Sequelize.DECIMAL(10)
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

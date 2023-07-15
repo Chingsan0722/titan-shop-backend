@@ -6,12 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasOne(models.Category, {
       foreignKey: 'categoryId'
     })
-    Product.belongsToMany(models.Order, {
-      through: 'OrderProduct',
+    Product.belongsTo(models.Order, {
       foreignKey: 'productId'
     })
-    Product.belongsToMany(models.Cart, {
-      through: 'CartProduct',
+    Product.belongsTo(models.Cart, {
       foreignKey: 'productId'
     })
   }

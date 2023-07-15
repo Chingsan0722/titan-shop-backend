@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
   }, {})
   Category.associate = function (models) {
-    Category.belongsTo(models.Product,
+    Category.hasMany(models.Product,
       { foreignKey: 'categoryId' })
   }
   Category.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    available: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Category',

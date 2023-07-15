@@ -1,13 +1,20 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define('Cart', {
-    user_id: DataTypes.INTEGER
   }, {})
   Cart.associate = function (models) {
     Cart.belongsTo(models.User,
-      { foreignKey: 'user_id' })
+      { foreignKey: 'userId' })
     Cart.belongsToMany(models.Product,
-      { through: 'CartProducts', foreignKey: 'cart_id' })
+      { through: 'CartProducts', foreignKey: 'cartId' })
   }
+  Cart.init({
+    userId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Cart',
+    tableName: 'Carts',
+    underscored: true
+  })
   return Cart
 }

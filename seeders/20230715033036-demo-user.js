@@ -7,15 +7,15 @@ module.exports = {
       account: 'buyer001',
       password: await bcrypt.hash('titaner', 10),
       role: 'user',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      created_at: new Date(),
+      updated_at: new Date()
     }, {
       name: 'seller001',
       account: 'seller001',
       password: await bcrypt.hash('titaner', 10),
       role: 'admin',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      created_at: new Date(),
+      updated_at: new Date()
     }])
   },
 

@@ -1,12 +1,13 @@
-const { User, sequelize } = require('../models')
+const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const userController = {
   getUser: async (req, res, next) => {
     try {
       const userId = req.params?.id
-      console.log(userId)
-      const data = await User.findAll()
+      const data = await User.findOne({ where: { id: userId }, raw: true })
+      // 下一版新增cart的資料，讓使用者再次登入時可以知道他已經放了什麼在cart中
       if (data.length === 0) return res.status(404).json({ message: 'User not found' })
+      delete data.password
       res.json(data)
     } catch (error) {
       next(error)

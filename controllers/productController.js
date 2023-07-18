@@ -4,7 +4,21 @@ const productController = {
   getProduct: async (req, res, next) => {
     const productId = Number(req.params.id)
     try {
-      const data = await sequelize.query(`SELECT * FROM Products WHERE id = ${productId}`, { type: QueryTypes.SELECT })
+      const data = await sequelize.query(
+      ` SELECT 
+        Products.name,
+        Products.price,
+        Products.description,
+        Products.image,
+        Products.stock,
+        Products.total_sold,
+        Categories.name AS category_name,
+        Categories.available,
+        Products.created_at,
+        Products.updated_at
+        FROM Products
+        JOIN Categories ON Products.category_id = Categories.id
+        WHERE Products.id = ${productId}`, { type: QueryTypes.SELECT })
       res.json(data)
     } catch (error) {
       next(error)
@@ -12,7 +26,20 @@ const productController = {
   },
   getAllProduct: async (req, res, next) => {
     try {
-      const data = await sequelize.query('SELECT * FROM Products', { type: QueryTypes.SELECT })
+      const data = await sequelize.query(`
+        SELECT 
+        Products.name,
+        Products.price,
+        Products.description,
+        Products.image,
+        Products.stock,
+        Products.total_sold,
+        Categories.name AS category_name,
+        Categories.available,
+        Products.created_at,
+        Products.updated_at
+        FROM Products
+        JOIN Categories ON Products.category_id = Categories.id`, { type: QueryTypes.SELECT })
       res.json(data)
     } catch (error) {
       next(error)

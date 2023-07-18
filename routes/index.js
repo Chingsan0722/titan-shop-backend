@@ -19,7 +19,7 @@ router.delete('/carts/products/:id', cartController.deleteCart)
 router.delete('/carts/users/:id', cartController.deleteAllCart)
 router.get('/carts/users/:id', cartController.getCart)
 
-router.post('/orders/users/:id', orderController.addToOrder)
+router.post('/orders', orderController.addToOrder)
 router.get('/orders/users/:id', orderController.getOrder)
 
 router.get('/users/:id', userController.getUser)

@@ -27,6 +27,7 @@ module.exports = {
         type: Sequelize.DECIMAL(10)
       },
       total_sold: {
+        defaultValue: 0,
         type: Sequelize.DECIMAL(10)
       },
       created_at: {

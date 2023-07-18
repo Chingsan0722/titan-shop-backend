@@ -15,7 +15,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       price: {
-        type: Sequelize.DECIMAL(10)
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0
+        }
       },
       description: {
         type: Sequelize.TEXT
@@ -24,11 +29,20 @@ module.exports = {
         type: Sequelize.STRING
       },
       stock: {
-        type: Sequelize.DECIMAL(10)
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0
+        }
       },
       total_sold: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
         defaultValue: 0,
-        type: Sequelize.DECIMAL(10)
+        validate: {
+          min: 0
+        }
       },
       created_at: {
         allowNull: false,

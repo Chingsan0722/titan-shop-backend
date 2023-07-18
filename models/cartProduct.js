@@ -1,6 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const CartProduct = sequelize.define('CartProduct', {
-    quantity: DataTypes.DECIMAL(10)
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      }
+    }
   }, {
     sequelize,
     modelName: 'CartProduct',

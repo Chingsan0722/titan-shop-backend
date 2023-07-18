@@ -23,8 +23,12 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       quantity: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.DECIMAL(10)
+        defaultValue: 0,
+        validate: {
+          min: 0
+        }
       },
       created_at: {
         type: Sequelize.DATE,

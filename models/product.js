@@ -4,10 +4,25 @@ module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     categoryId: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    price: DataTypes.DECIMAL,
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      }
+    },
     description: DataTypes.STRING,
     image: DataTypes.STRING,
-    stock: DataTypes.DECIMAL
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      }
+    },
+    totalSold: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Product',

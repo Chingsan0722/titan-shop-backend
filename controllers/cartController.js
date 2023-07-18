@@ -3,14 +3,13 @@ const { QueryTypes } = require('sequelize')
 const cartController = {
   addToCart: async (req, res, next) => {
     try {
-      const userId = 1
+      const userId = req.user.id
       const productId = Number(req.params.id)
-      const quantity = Number(req.body.quantity)
-      const cart = await Cart.findOrCreate({ where: { userId }, raw: true })
-      const cartId = cart[0].id
-      console.log('cartid', cartId)
-      console.log('productId', productId)
-      console.log('quantity', quantity)
+      const quantity = Number(req.body.quantity) > 0 ? Number(req.body.quantity) : 0
+      if (quantity === 0) res.status(400).json('quantity cannot lower than 1')
+      const stock = await sequelize.query('SELECT stock FROM Products WHERE id = :productId', { replacements: { productId }, type: QueryTypes.SELECT })
+      if (stock[0].stock < quantity) return res.status(400).json('out of stock')
+      await Cart.findOrCreate({ where: { userId } })
       const data = await CartProduct.findOrCreate({
         where: { userId, productId },
         defaults: { quantity }
@@ -18,14 +17,17 @@ const cartController = {
       if (data[1]) {
         res.json('add success')
       } else {
-        res.json('your cart already exist this product.')
+        const AfterQuantity = data[0].quantity + quantity
+        if (stock[0].stock < AfterQuantity) return res.status(400).json('out of stock')
+        await CartProduct.update({ quantity: AfterQuantity }, { where: { userId, productId } })
+        res.json('add success')
       }
     } catch (error) {
       next(error)
     }
   },
   getCart: async (req, res, next) => {
-    const userId = req.params.id
+    const userId = req.user.id
     try {
       const data = await sequelize.query(`
       SELECT
@@ -45,6 +47,7 @@ const cartController = {
       next(error)
     }
   },
+  // add to cart 已經做到可以更新了，先保留
   updateCart: async (req, res, next) => {
     const userId = 1
     const productId = req.params.id
@@ -59,7 +62,7 @@ const cartController = {
     }
   },
   deleteCart: async (req, res, next) => {
-    const userId = 1
+    const userId = req.user.id
     const productId = req.params.id
     try {
       const cartProduct = await CartProduct.findOne({ where: { productId, userId } })
@@ -71,11 +74,13 @@ const cartController = {
     }
   },
   deleteAllCart: async (req, res, next) => {
-    const userId = req.params.id
-    await sequelize.transaction(async (t) => {
-      await CartProduct.destroy({ where: { userId }, transaction: t })
-    })
-    res.json('delete success')
+    const userId = req.user.id
+    try {
+      await CartProduct.destroy({ where: { userId } })
+      res.json('delete success')
+    } catch (error) {
+      next(error)
+    }
   }
 }
 

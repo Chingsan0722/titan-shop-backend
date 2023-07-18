@@ -32,14 +32,12 @@ const cartController = {
       const data = await sequelize.query(`
       SELECT
       *
-      FROM Carts 
-      JOIN Cartproducts 
-      ON Carts.id = Cartproducts.cart_id 
+      FROM Cartproducts
       JOIN Products 
       ON Cartproducts.product_id = Products.id
       JOIN Categories
       ON Categories.id = Products.category_id
-      WHERE Carts.user_id = :userId`,
+      WHERE Cartproducts.user_id = :userId`,
       { replacements: { userId }, type: QueryTypes.SELECT })
       data.forEach((cart) => { cart.subTotal = (cart.price * cart.quantity) })
       res.json(data)

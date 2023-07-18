@@ -9,8 +9,8 @@ module.exports = {
           model: 'Users',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
       },
       product_id: {
         type: Sequelize.INTEGER,
@@ -19,8 +19,8 @@ module.exports = {
           model: 'Products',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
       },
       quantity: {
         type: Sequelize.INTEGER,

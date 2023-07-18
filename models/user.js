@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     account: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.STRING
-  }, {})
+  }, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'Users',
+    underscored: true
+  })
   User.associate = function (models) {
     User.hasOne(models.Cart, {
       foreignKey: 'userId'
@@ -19,12 +24,5 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId'
     })
   }
-  User.init({
-  }, {
-    sequelize,
-    modelName: 'User',
-    tableName: 'Users',
-    underscored: true
-  })
   return User
 }

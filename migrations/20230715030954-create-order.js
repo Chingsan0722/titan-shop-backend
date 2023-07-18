@@ -9,13 +9,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.INTEGER
-      },
-      product_id: {
-        type: Sequelize.INTEGER
-      },
-      quantity: {
-        type: Sequelize.DECIMAL(10)
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at: {
         allowNull: false,

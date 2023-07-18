@@ -3,15 +3,15 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define('Order', {
   }, {})
   Order.associate = function (models) {
-    Order.hasMany(models.User,
+    Order.belongsTo(models.User,
       { foreignKey: 'userId' })
-    Order.hasMany(models.Product,
-      { foreignKey: 'productId' })
+    Order.belongsToMany(models.Product, {
+      through: models.OrderProduct,
+      foreignKey: 'orderId'
+    })
   }
   Order.init({
-    userId: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Order',

@@ -1,5 +1,6 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
+// 為了證明寫在 define 還是 init 都是可以的
   const Product = sequelize.define('Product', {
     categoryId: DataTypes.INTEGER,
     name: DataTypes.STRING,
@@ -14,16 +15,16 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true
   })
   Product.associate = function (models) {
-    Product.hasOne(models.Category, {
+    Product.belongsTo(models.Category, {
       foreignKey: 'categoryId'
     })
-    Product.belongsTo(models.Order, {
-      foreignKey: 'productId',
-      as: 'OrderProducts'
+    Product.belongsToMany(models.Order, {
+      through: models.OrderProduct,
+      foreignKey: 'productId'
     })
-    Product.belongsTo(models.Cart, {
-      foreignKey: 'productId',
-      as: 'CartProducts'
+    Product.belongsToMany(models.Cart, {
+      through: models.CartProduct,
+      foreignKey: 'productId'
     })
   }
   return Product

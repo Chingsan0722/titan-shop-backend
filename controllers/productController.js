@@ -2,7 +2,7 @@ const { Product, sequelize } = require('../models')
 const { QueryTypes } = require('sequelize')
 const productController = {
   getProduct: async (req, res, next) => {
-    const productId = Number(req.params.id)
+    const productId = req.params.id
     try {
       const data = await sequelize.query(
       ` SELECT 
@@ -48,6 +48,9 @@ const productController = {
   addProduct: async (req, res, next) => {
     try {
       const { name, price, description, stock, image, categoryId } = req.body
+      if (!name || !price || !description || !stock || !categoryId) res.status(400).json('Missing parameters')
+      if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
+      if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
       const data = await Product.create({
         name, price, description, stock, image, categoryId
       })
@@ -59,11 +62,13 @@ const productController = {
   updateProduct: async (req, res, next) => {
     try {
       const { name, price, description, stock, image, categoryId } = req.body
+      if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
+      if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
       const productId = req.params.id
       const product = await Product.findOne({
         id: productId
       })
-      if (!product) res.status(404).json('Product not found')
+      if (!product) return res.status(404).json('Product not found')
       const data = await product.update({
         name, price, description, stock, image, categoryId
       })
@@ -73,14 +78,15 @@ const productController = {
     }
   },
   deleteProduct: async (req, res, next) => {
+    const id = req.params.id
     try {
-      const product = await Product.findOne({
-        where: {
-          id: req.params.id
-        }
-      })
-      if (!product) res.status(404).json('Product not found')
-      // 判斷一下有沒有刪成功？
+      const product = await Product.findByPk(id)
+      const inOrder = await sequelize.query(
+        'SELECT * FROM OrderProducts WHERE product_id = :id ', { replacements: { id }, type: QueryTypes.SELECT })
+      await sequelize.query(
+        'DELETE FROM CartProducts WHERE product_id = :id ', { replacements: { id }, type: QueryTypes.DELETE })
+      if (inOrder.length > 0) return res.status(400).json('This product is in order, I recommend you to set stock to zero.')
+      if (!product) return res.status(404).json('Product not found')
       await product.destroy()
       res.json('Product deleted')
     } catch (error) {

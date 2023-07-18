@@ -26,6 +26,7 @@ router.get('/carts', authenticated, cartController.getCart)
 router.post('/orders', authenticated, orderController.addToOrder)
 // 先做只有管理員能看的，等優化再加入會員查訂單
 router.get('/orders/users/:id', authenticatedAdmin, orderController.getOrder)
+router.delete('/orders/users/:id', authenticatedAdmin, orderController.deleteOrder)
 
 // Users
 // 測試用。還沒寫好前端讓使用者編輯資料，確定要加註冊再補

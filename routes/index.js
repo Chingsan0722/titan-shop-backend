@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { apiErrorHandler } = require('../middleware/errorHandler')
 const { authenticated, authenticatedAdmin } = require('../middleware/api-auth')
+const upload = require('../middleware/multer')
 const userController = require('../controllers/userController')
 const productController = require('../controllers/productController')
 const cartController = require('../controllers/cartController')
@@ -11,9 +12,15 @@ const passport = require('../config/passport')
 // Products
 router.get('/products', productController.getAllProduct)
 router.get('/products/:id', productController.getProduct)
-router.put('/products/:id', authenticatedAdmin, productController.updateProduct)
+router.put('/products/:id',
+  upload.fields([
+    { name: 'image', maxCount: 1 }
+  ]), authenticatedAdmin, productController.updateProduct)
 router.delete('/products/:id', authenticatedAdmin, productController.deleteProduct)
-router.post('/products', authenticatedAdmin, productController.addProduct)
+router.post('/products',
+  upload.fields([
+    { name: 'image', maxCount: 1 }
+  ]), authenticatedAdmin, productController.addProduct)
 
 // Carts
 router.post('/carts/products/:id', authenticated, cartController.addToCart)

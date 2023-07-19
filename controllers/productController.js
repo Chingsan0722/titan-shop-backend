@@ -1,4 +1,5 @@
 const { Product, sequelize } = require('../models')
+const { imgurFileHandler } = require('../helpers/file-helpers')
 const { QueryTypes } = require('sequelize')
 const productController = {
   getProduct: async (req, res, next) => {
@@ -47,12 +48,17 @@ const productController = {
   },
   addProduct: async (req, res, next) => {
     try {
-      const { name, price, description, stock, image, categoryId } = req.body
+      const { name, price, description, stock, categoryId } = req.body
       if (!name || !price || !description || !stock || !categoryId) res.status(400).json('Missing parameters')
       if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
+      let imagePath
+      if (req.files) {
+        const { image } = req.files
+        imagePath = await imgurFileHandler(image[0])
+      }
       const data = await Product.create({
-        name, price, description, stock, image, categoryId
+        name, price, description, stock, image: imagePath, categoryId
       })
       res.json(data)
     } catch (error) {
@@ -61,16 +67,22 @@ const productController = {
   },
   updateProduct: async (req, res, next) => {
     try {
-      const { name, price, description, stock, image, categoryId } = req.body
+      const { name, price, description, stock, categoryId } = req.body
+      if (name?.length === 0 || description?.length === 0 || categoryId?.length === 0) return res.status(400).json('Missing parameters')
       if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
+      let imagePath
+      if (req.files) {
+        const { image } = req.files
+        imagePath = await imgurFileHandler(image[0])
+      }
       const productId = req.params.id
       const product = await Product.findOne({
         id: productId
       })
       if (!product) return res.status(404).json('Product not found')
       const data = await product.update({
-        name, price, description, stock, image, categoryId
+        name, price, description, stock, image: imagePath, categoryId
       })
       res.json(data)
     } catch (error) {

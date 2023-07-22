@@ -58,7 +58,6 @@ const orderController = {
       }
       const order = await Order.create({ userId, raw: true, transaction })
       const orderId = order.id
-      console.log(carts)
       await OrderProduct.bulkCreate(carts.map(product => ({
         productId: product.product_id,
         quantity: product.quantity,

@@ -46,6 +46,6 @@ router.post('/users/signin', passport.authenticate('local', { session: false }),
 router.get('/', (req, res) => {
   res.send('Welcome to the Titan Shop API')
 })
-router.use('/', apiErrorHandler)
+// router.use('/', apiErrorHandler)
 
 module.exports = router

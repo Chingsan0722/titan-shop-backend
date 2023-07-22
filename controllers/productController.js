@@ -7,6 +7,7 @@ const productController = {
     try {
       const data = await sequelize.query(
       ` SELECT 
+        Products.id,
         Products.name,
         Products.price,
         Products.description,
@@ -29,6 +30,7 @@ const productController = {
     try {
       const data = await sequelize.query(`
         SELECT 
+        Products.id,
         Products.name,
         Products.price,
         Products.description,

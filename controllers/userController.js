@@ -15,12 +15,12 @@ const userController = {
   },
   signIn: async (req, res, next) => {
     try {
-      const userData = req.user.toJSON()
-      delete userData.password
-      const token = jwt.sign(userData, process.env.JWT_SECRET, {
+      const data = req.user.toJSON()
+      delete data.password
+      const token = jwt.sign(data, process.env.JWT_SECRET, {
         expiresIn: '7d'
       })
-      return res.status(200).json({ token, userData })
+      return res.status(200).json({ token, data })
     } catch (error) {
       next(error)
     }

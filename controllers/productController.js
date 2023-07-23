@@ -14,7 +14,8 @@ const productController = {
         Products.image,
         Products.stock,
         Products.total_sold,
-        Categories.name AS category_name,
+        Categories.id AS categoryId,
+        Categories.name AS categoryName,
         Categories.available,
         Products.created_at,
         Products.updated_at
@@ -37,7 +38,8 @@ const productController = {
         Products.image,
         Products.stock,
         Products.total_sold,
-        Categories.name AS category_name,
+        Categories.id AS categoryId,
+        Categories.name AS categoryName,
         Categories.available,
         Products.created_at,
         Products.updated_at
@@ -71,7 +73,7 @@ const productController = {
     try {
       const { name, price, description, stock, categoryId } = req.body
       if (name?.length === 0 || description?.length === 0 || categoryId?.length === 0) return res.status(400).json('Missing parameters')
-      if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
+      if (Number(stock) < 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
       let imagePath
       if (req.files) {

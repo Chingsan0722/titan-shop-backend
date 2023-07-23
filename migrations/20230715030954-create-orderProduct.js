@@ -3,7 +3,6 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('OrderProducts', {
       order_id: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Orders',
@@ -13,7 +12,6 @@ module.exports = {
         onUpdate: 'CASCADE'
       },
       product_id: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Products',

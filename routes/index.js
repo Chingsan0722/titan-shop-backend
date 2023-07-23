@@ -13,14 +13,10 @@ const passport = require('../config/passport')
 router.get('/products', productController.getAllProduct)
 router.get('/products/:id', productController.getProduct)
 router.put('/products/:id',
-  upload.fields([
-    { name: 'image', maxCount: 1 }
-  ]), authenticatedAdmin, productController.updateProduct)
+  upload.single('image'), authenticatedAdmin, productController.updateProduct)
 router.delete('/products/:id', authenticatedAdmin, productController.deleteProduct)
 router.post('/products',
-  upload.fields([
-    { name: 'image', maxCount: 1 }
-  ]), authenticatedAdmin, productController.addProduct)
+  upload.single('image'), authenticatedAdmin, productController.addProduct)
 
 // Carts
 router.post('/carts/products/:id', authenticated, cartController.addToCart)

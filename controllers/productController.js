@@ -57,9 +57,8 @@ const productController = {
       if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
       let imagePath
-      if (req.files) {
-        const { image } = req.files
-        imagePath = await imgurFileHandler(image[0])
+      if (req.file) {
+        imagePath = await imgurFileHandler(req.file)
       }
       const data = await Product.create({
         name, price, description, stock, image: imagePath, categoryId
@@ -76,9 +75,8 @@ const productController = {
       if (Number(stock) < 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
       let imagePath
-      if (req.files) {
-        const { image } = req.files
-        imagePath = await imgurFileHandler(image[0])
+      if (req.file) {
+        imagePath = await imgurFileHandler(req.file)
       }
       const productId = req.params.id
       const product = await Product.findOne({

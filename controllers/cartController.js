@@ -52,13 +52,14 @@ const cartController = {
       next(error)
     }
   },
-  // add to cart 已經做到可以更新了，先保留
   updateCart: async (req, res, next) => {
-    const userId = 1
+    const userId = req.user.id
     const productId = req.params.id
     const quantity = req.body.quantity
     try {
       const product = await CartProduct.findOne({ where: { productId, userId } })
+      const nowStock = await sequelize.query('SELECT stock FROM Products WHERE id = :productId', { replacements: { productId }, type: QueryTypes.SELECT })
+      if (quantity > nowStock[0].stock) return res.status(400).json('out of stock')
       if (!product) throw new Error('product not found')
       await product.update({ quantity })
       res.json('update success')

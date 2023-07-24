@@ -13,7 +13,8 @@ const productController = {
         Products.description,
         Products.image,
         Products.stock,
-        Products.total_sold,
+        Products.total_sold AS totalSold,
+        Products.available,
         Categories.id AS categoryId,
         Categories.name AS categoryName,
         Categories.available,
@@ -37,7 +38,8 @@ const productController = {
         Products.description,
         Products.image,
         Products.stock,
-        Products.total_sold,
+        Products.total_sold AS totalSold,
+        Products.available,
         Categories.id AS categoryId,
         Categories.name AS categoryName,
         Categories.available,
@@ -52,7 +54,7 @@ const productController = {
   },
   addProduct: async (req, res, next) => {
     try {
-      const { name, price, description, stock, categoryId } = req.body
+      const { name, price, description, stock, categoryId, available } = req.body
       if (!name || !price || !description || !stock || !categoryId) res.status(400).json('Missing parameters')
       if (Number(stock) <= 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
@@ -61,7 +63,7 @@ const productController = {
         imagePath = await imgurFileHandler(req.file)
       }
       const data = await Product.create({
-        name, price, description, stock, image: imagePath, categoryId
+        name, price, description, stock, image: imagePath, categoryId, available
       })
       res.json(data)
     } catch (error) {
@@ -70,7 +72,7 @@ const productController = {
   },
   updateProduct: async (req, res, next) => {
     try {
-      const { name, price, description, stock, categoryId } = req.body
+      const { name, price, description, stock, categoryId, available } = req.body
       if (name?.length === 0 || description?.length === 0 || categoryId?.length === 0) return res.status(400).json('Missing parameters')
       if (Number(stock) < 0) return res.status(400).json('Stock must be greater than 0')
       if (Number(price) <= 0) return res.status(400).json('Price must be greater than 0')
@@ -84,7 +86,7 @@ const productController = {
       })
       if (!product) return res.status(404).json('Product not found')
       const data = await product.update({
-        name, price, description, stock, image: imagePath, categoryId
+        name, price, description, stock, image: imagePath, categoryId, available
       })
       res.json(data)
     } catch (error) {

@@ -31,7 +31,14 @@ const cartController = {
     try {
       const data = await sequelize.query(`
       SELECT
-      *
+      Products.name AS productName,
+      Products.price AS price,
+      Products.image AS image,
+      Products.id AS productId,
+      Products.stock AS stock,
+      Categories.id AS categoryId,
+      Categories.name AS categoryName,
+      Cartproducts.quantity AS quantity
       FROM Cartproducts
       JOIN Products 
       ON Cartproducts.product_id = Products.id

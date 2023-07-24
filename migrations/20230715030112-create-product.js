@@ -44,6 +44,10 @@ module.exports = {
           min: 0
         }
       },
+      available: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

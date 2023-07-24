@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         min: 0
       }
     },
+    available: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
     totalSold: DataTypes.INTEGER
   }, {
     sequelize,

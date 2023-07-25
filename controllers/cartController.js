@@ -44,7 +44,7 @@ const cartController = {
       ON Cartproducts.product_id = Products.id
       JOIN Categories
       ON Categories.id = Products.category_id
-      WHERE Cartproducts.user_id = :userId`,
+      WHERE CartProducts.user_id = :userId`,
       { replacements: { userId }, type: QueryTypes.SELECT })
       data.forEach((cart) => { cart.subTotal = (cart.price * cart.quantity) })
       res.json(data)

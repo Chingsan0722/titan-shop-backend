@@ -38,10 +38,10 @@ const cartController = {
       Products.stock AS stock,
       Categories.id AS categoryId,
       Categories.name AS categoryName,
-      Cartproducts.quantity AS quantity
-      FROM Cartproducts
+      CartProducts.quantity AS quantity
+      FROM CartProducts
       JOIN Products 
-      ON Cartproducts.product_id = Products.id
+      ON CartProducts.product_id = Products.id
       JOIN Categories
       ON Categories.id = Products.category_id
       WHERE CartProducts.user_id = :userId`,

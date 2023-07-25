@@ -29,6 +29,10 @@ const productController = {
     }
   },
   getAllProduct: async (req, res, next) => {
+    console.log(req.query)
+    const categoryId = req.query.categoryId
+    let selectCategory = ''
+    if (categoryId) selectCategory = `WHERE Products.category_id = ${categoryId}`
     try {
       const data = await sequelize.query(`
         SELECT 
@@ -46,7 +50,7 @@ const productController = {
         Products.created_at,
         Products.updated_at
         FROM Products
-        JOIN Categories ON Products.category_id = Categories.id`, { type: QueryTypes.SELECT })
+        JOIN Categories ON Products.category_id = Categories.id ${selectCategory}`, { type: QueryTypes.SELECT })
       res.json(data)
     } catch (error) {
       next(error)

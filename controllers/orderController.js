@@ -58,30 +58,30 @@ const orderController = {
       }
       const order = await Order.create({ userId, raw: true, transaction })
       const orderId = order.id
-      await OrderProduct.bulkCreate(carts.map(product => ({
+      const data = await OrderProduct.bulkCreate(carts.map(product => ({
         productId: product.product_id,
         quantity: product.quantity,
         orderId
       })), { transaction })
       await CartProduct.destroy({ where: { userId }, transaction })
       await transaction.commit()
-      res.json('post success')
+      res.json(data)
     } catch (error) {
       await transaction.rollback()
       next(error)
     }
   },
   getOrder: async (req, res, next) => {
-    const userId = req.params.id
+    const orderId = req.params.id
     try {
       const data = await sequelize.query(`
-      SELECT Orders.id AS order_id, Products.name AS product_name, OrderProducts.quantity, Orders.created_at AS order_date
+      SELECT Orders.id AS orderId, Products.id AS productId, Products.name AS name, Products.price AS price, OrderProducts.quantity,(Products.price * OrderProducts.quantity) AS subtotal, Orders.created_at AS orderDate
       FROM Orders
       JOIN OrderProducts ON OrderProducts.order_id = Orders.id
       JOIN Products ON OrderProducts.product_id = Products.id
-      WHERE Orders.user_id = :userId
+      WHERE Orders.id = :orderId
       ORDER BY Orders.created_at DESC
-      `, { replacements: { userId }, type: QueryTypes.SELECT })
+      `, { replacements: { orderId }, type: QueryTypes.SELECT })
       res.json(data)
     } catch (error) {
       next(error)

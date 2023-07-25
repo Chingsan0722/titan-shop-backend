@@ -27,8 +27,7 @@ router.get('/carts', authenticated, cartController.getCart)
 
 // Orders
 router.post('/orders', authenticated, orderController.addToOrder)
-// 先做只有管理員能看的，等優化再加入會員查訂單
-router.get('/orders/users/:id', authenticatedAdmin, orderController.getOrder)
+router.get('/orders/:id', authenticated, orderController.getOrder)
 router.delete('/orders/users/:id', authenticatedAdmin, orderController.deleteOrder)
 
 // Users

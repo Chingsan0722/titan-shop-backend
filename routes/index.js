@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-// const { apiErrorHandler } = require('../middleware/errorHandler')
+const { apiErrorHandler } = require('../middleware/errorHandler')
 const { authenticated, authenticatedAdmin } = require('../middleware/api-auth')
 const upload = require('../middleware/multer')
 const userController = require('../controllers/userController')
@@ -31,16 +31,12 @@ router.get('/orders/:id', authenticated, orderController.getOrder)
 router.delete('/orders/users/:id', authenticatedAdmin, orderController.deleteOrder)
 
 // Users
-// 測試用。還沒寫好前端讓使用者編輯資料，確定要加註冊再補
 router.get('/users/:id', userController.getUser)
 
 router.post('/users/signin', passport.authenticate('local', { session: false }), userController.signIn)
-// router.post('/user/signup', userController.signup)
-// router.post('/user/forgotPassword', userController.forgotPassword)
-// 可以寫 API 文件放在這條上面（有空再說）
 router.get('/', (req, res) => {
   res.send('Welcome to the Titan Shop API')
 })
-// router.use('/', apiErrorHandler)
+router.use('/', apiErrorHandler)
 
 module.exports = router

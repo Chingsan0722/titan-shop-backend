@@ -46,7 +46,6 @@ const productController = {
         Products.available,
         Categories.id AS categoryId,
         Categories.name AS categoryName,
-        Products.available,
         Products.created_at,
         Products.updated_at
         FROM Products

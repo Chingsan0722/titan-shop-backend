@@ -74,6 +74,8 @@ const productController = {
     }
   },
   updateProduct: async (req, res, next) => {
+    const productId = req.params.id
+    console.log(productId)
     try {
       const { name, price, description, stock, categoryId, available } = req.body
       if (name?.length === 0 || description?.length === 0 || categoryId?.length === 0) return res.status(400).json('Missing parameters')
@@ -83,10 +85,7 @@ const productController = {
       if (req.file) {
         imagePath = await imgurFileHandler(req.file)
       }
-      const productId = req.params.id
-      const product = await Product.findOne({
-        id: productId
-      })
+      const product = await Product.findOne({ where: { id: productId } })
       if (!product) return res.status(404).json('Product not found')
       const data = await product.update({
         name, price, description, stock, image: imagePath, categoryId, available
